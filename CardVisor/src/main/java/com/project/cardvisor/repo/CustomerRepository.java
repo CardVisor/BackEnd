@@ -6,4 +6,5 @@ import com.project.cardvisor.vo.CustomerVO;
 
 public interface CustomerRepository extends CrudRepository<CustomerVO, String> {
 
+	
 }

@@ -7,8 +7,11 @@ import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -45,6 +48,23 @@ public class CurrencyTests {
 	String authkey;
 	@Value("${exchange-data}")
     String data ;
+	
+	//@Test x
+	void f2() {
+		 LocalDate currentDate = LocalDate.now();
+
+	        // Calculate the date 3 years ago
+	        LocalDate threeYearsAgo = currentDate.minusYears(3);
+
+	        // Loop through the days from 3 years ago until the current date
+	        LocalDate date = threeYearsAgo;
+	        
+	        while (date.isBefore(currentDate) || date.isEqual(currentDate)) {
+	           
+	            date = date.plusDays(1);
+	        }
+	}
+	
 	@Test
 	void f1() {
 		
@@ -59,16 +79,26 @@ ObjectMapper objectmapper = new ObjectMapper();
         StringBuffer responseContent = new StringBuffer();
         JSONParser parser = new JSONParser();
         //2월1일 검색
-        Date date = new Date(124, 1, 1);
-        String searchDate = new SimpleDateFormat("yyyyMMdd").format(date);
+        //Date date = new Date(124, 1, 1);
+        //String searchDate = new SimpleDateFormat("yyyyMMdd").format(date);
         //String searchDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         
         BigDecimal exchangeRate = null;
         List<Object> result = new ArrayList<>();
+   	 LocalDate currentDate = LocalDate.now();
 
+     // Calculate the date 3 years ago
+   	LocalDate startdate = LocalDate.of(2024, 2, 7);
+
+     // Loop through the days from 3 years ago until the current date
+ 
+     
+     while (startdate.isBefore(currentDate) || startdate.isEqual(currentDate)) {
+    	 System.out.println(startdate);
+   
         try {
             // Request URL
-            URL url = new URL("https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=" + authkey + "&searchdate=" + searchDate + "&data=" + data);
+            URL url = new URL("https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=" + authkey + "&searchdate=" + startdate + "&data=" + data);
             connection = (HttpURLConnection) url.openConnection();
            
             // Request 초기 세팅
@@ -100,14 +130,15 @@ ObjectMapper objectmapper = new ObjectMapper();
                         String valueWithoutCommas = currency_rate1.replaceAll(",", "");
                         Double currency_rate = Double.parseDouble(valueWithoutCommas);
                         String currency_nation = (String)exchangeRateInfo.get("cur_nm");
-                        Long result1Long = (Long) exchangeRateInfo.get("result");
-                        Integer result1 = result1Long.intValue();
-                   System.out.println("result"+result1);
-						/*
-						 * CurrencyVO currency = CurrencyVO.builder() .result(result1)
-						 * .currency_code(currency_code) .currency_nation(currency_nation)
-						 * .currency_rate(currency_rate) .build(); crepo.save(currency);
-						 */
+                        LocalDateTime localDateTime = startdate.atStartOfDay();
+                        Timestamp timestamp = Timestamp.valueOf(localDateTime);
+                        System.out.println(timestamp);
+						
+						  CurrencyVO currency = CurrencyVO.builder()
+						  .currency_code(currency_code) .currency_nation(currency_nation)
+						  .currency_date(timestamp)
+						  .currency_rate(currency_rate) .build();
+						 crepo.save(currency);
                             	
                           
                       
@@ -133,7 +164,8 @@ ObjectMapper objectmapper = new ObjectMapper();
         } finally {
             connection.disconnect();
         }
-
+        startdate = startdate.plusDays(1);
+       }
         if (exchangeRate == null) {
             exchangeRate = defaultExchangeRate;
         }

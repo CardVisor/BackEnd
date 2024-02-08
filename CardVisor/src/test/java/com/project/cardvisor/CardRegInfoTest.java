@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.project.cardvisor.repo.CardListRepository;
 import com.project.cardvisor.repo.CardRegInfoRepository;
 import com.project.cardvisor.repo.CustomerRepository;
+import com.project.cardvisor.service.CardReginfoService;
 import com.project.cardvisor.vo.CardListVO;
 import com.project.cardvisor.vo.CardRegInfoVO;
 import com.project.cardvisor.vo.CustomerVO;
@@ -38,6 +39,8 @@ public class CardRegInfoTest {
 	@Autowired
 	CustomerRepository crepo;
 
+	@Autowired
+	CardReginfoService cservice;
 	// 카드 레포 추가해야함
 
 	/*
@@ -79,6 +82,12 @@ public class CardRegInfoTest {
 	}
 
 	@Test
+	void f2() {
+		int count = cservice.addOnedaycustomer();
+		System.out.println(count);
+	}
+	
+	//@Test
 	void f1() throws IOException {
 
 		BufferedReader reader = new BufferedReader(
@@ -121,6 +130,9 @@ public class CardRegInfoTest {
 			CardListVO vo = clrepo.findById(randomNumber).orElse(null);;
 			
 			Date cal = c1.getCust_birth();
+			
+			
+			
 			
 			LocalDate birthDate = LocalDate.parse(cal.toString());
 			LocalDate startDate = birthDate.plusYears(19);
