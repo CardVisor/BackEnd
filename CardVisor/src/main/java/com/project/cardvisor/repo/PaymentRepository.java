@@ -63,7 +63,6 @@ public interface PaymentRepository extends CrudRepository<PaymentsVO, String>{
 			+ " FROM thisYear, lastYear", nativeQuery = true)
 	Map<String, Object> selectDiffPaymentThisYearAndLastYear(@Param("month") int month);
 
-
 	//올해 결제 건수가 제일 많은 나라 (순위 리스트업)
 	@Query(value ="SELECT COUNT(p.CURRENCY_CODE) AS PAYMENT_CNT"
 				+ " , SUM(p.PAY_AMOUNT * p.CURRENCY_RATE) AS TOTAL_PAYMENT"
@@ -76,15 +75,64 @@ public interface PaymentRepository extends CrudRepository<PaymentsVO, String>{
 			+ " GROUP BY p.CURRENCY_CODE"
 			+ " ORDER BY PAYMENT_CNT DESC, TOTAL_PAYMENT DESC"
 			+ " LIMIT 20", nativeQuery = true)
-
 	List<Map<String, Object>> selectHighestOrderPayment();
 
-	
 	//(차트 데이터) 월별 데이터 추출
-//	@Query
-//	List<Map<String, Object>> selectNationPaymentsDataList();
-	
-	
+	@Query(value="SELECT"
+			+ "    payment_month"
+			+ "    , nation"
+			+ "    , age_range"
+			+ "    , total_payment_count"
+			+ "    , total_amount"
+			+ " FROM"
+			+ "    ("
+			+ "        SELECT"
+			+ "            payment_month"
+			+ "            , nation"
+			+ "            , age_range"
+			+ "            , payment_count"
+			+ "            , SUM(total_payment_count) OVER (PARTITION BY payment_month, nation) as total_payment_count"
+			+ "            , SUM(total_amount) OVER (PARTITION BY payment_month, nation) as total_amount"
+			+ "            , RANK() OVER (PARTITION BY payment_month, nation ORDER BY payment_count DESC) as rank"
+			+ "        FROM"
+			+ "            ("
+			+ "                SELECT"
+			+ "                    DATE_FORMAT(p.pay_date, '%Y-%m') as payment_month"
+			+ "                    , p.nation"
+			+ "                    , CASE"
+			+ "                        WHEN TIMESTAMPDIFF(YEAR, c.cust_birth, CURRENT_DATE) BETWEEN 20 AND 29 THEN '20대'"
+			+ "                        WHEN TIMESTAMPDIFF(YEAR, c.cust_birth, CURRENT_DATE) BETWEEN 30 AND 39 THEN '30대'"
+			+ "                        WHEN TIMESTAMPDIFF(YEAR, c.cust_birth, CURRENT_DATE) BETWEEN 40 AND 49 THEN '40대'"
+			+ "                        WHEN TIMESTAMPDIFF(YEAR, c.cust_birth, CURRENT_DATE) BETWEEN 50 AND 59 THEN '50대'"
+			+ "                        WHEN TIMESTAMPDIFF(YEAR, c.cust_birth, CURRENT_DATE) BETWEEN 60 AND 69 THEN '60대'"
+			+ "                        ELSE '70대 이상'"
+			+ "                    , END as age_range"
+			+ "                    , COUNT(*) as payment_count"
+			+ "                    , COUNT(*) OVER (PARTITION BY DATE_FORMAT(p.pay_date, '%Y-%m'), p.nation) as total_payment_count"
+			+ "                    , SUM(p.PAY_AMOUNT * p.CURRENCY_RATE) OVER (PARTITION BY DATE_FORMAT(p.pay_date, '%Y-%m'), p.nation) as total_amount"
+			+ "                FROM"
+			+ "                    customer c"
+			+ "                JOIN"
+			+ "                    card_reg_info cri on c.cust_id = cri.cust_id"
+			+ "                JOIN"
+			+ "                    payments p on cri.reg_id = p.reg_id"
+			+ "                WHERE"
+			+ "                    p.pay_date >= STR_TO_DATE(CONCAT('2023-01', '-01'), '%Y-%m-%d')"
+			+ "                AND"
+			+ "                    p.pay_date <= STR_TO_DATE(CONCAT('2023-06', '-01'), '%Y-%m-%d') + INTERVAL 1 MONTH - INTERVAL 1 DAY"
+			+ "                AND"
+			+ "                    p.CURRENCY_CODE != 'KRW'"
+			+ "                GROUP BY"
+			+ "                    payment_month, p.nation, age_range"
+			+ "            ) AS subquery1"
+			+ "    ) AS subquery2"
+			+ " WHERE"
+			+ "    rank = 1"
+			+ " ORDER BY"
+			+ "    payment_month DESC", nativeQuery = true)
+	List<Map<String, Object>> selectNationPaymentsDataList();
+
+
 
 
 

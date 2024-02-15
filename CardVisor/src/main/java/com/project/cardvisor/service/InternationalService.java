@@ -32,7 +32,6 @@ public class InternationalService {
 
 	//월별 국가 결제 상세 정보 리스트
 	public List<Map<String, Object>> getNationPaymentsDataList() {
-		//return payrep.selectNationPaymentsDataList();
-		return payrep.selectHighestOrderPayment();
+		return payrep.selectNationPaymentsDataList();
 	}
 }
