@@ -29,10 +29,10 @@ public class CardListVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int card_type;
+	private int cardType;
 	
-	private String card_name;
-	private String card_img_url;
-	private int card_annual_fee;
+	private String cardName;
+	private String cardImgUrl;
+	private int cardAnnualFee;
 
 }

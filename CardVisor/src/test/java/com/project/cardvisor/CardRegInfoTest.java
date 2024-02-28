@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -27,6 +29,9 @@ import com.project.cardvisor.vo.CardListVO;
 import com.project.cardvisor.vo.CardRegInfoVO;
 import com.project.cardvisor.vo.CustomerVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootTest
 public class CardRegInfoTest {
 
@@ -72,7 +77,7 @@ public class CardRegInfoTest {
 	// 파일에 존재하는 애들 읽어오기
 	List<String> CustIdList = new ArrayList<String>(); // 고객명 현재 999건
 	List<String> CardNumList = new ArrayList<String>(); // 카드번호 현재 3000건
-
+	int [] cardNumselect = {27,26,9,1,10};
 	static Date getRandomDate(Date start, Date end) {
 		return new Date(getRandomTime(start.getTime(), end.getTime()));
 	}
@@ -81,35 +86,81 @@ public class CardRegInfoTest {
 		return ThreadLocalRandom.current().nextLong(startMillis, endMillis);
 	}
 
-	@Test
-	void f2() {
-		int count = cservice.addOnedaycustomer();
-		System.out.println(count);
-	}
+	//@Test
+	void f4() {
+		CustomerVO c2;
+		List<String> custList = new ArrayList<>();
+		crepo.findAll().forEach(c -> {
+		    custList.add(c.getCustId()); // CustomerVO 객체를 리스트에 추가
+		});
+		CardRegInfoVO checkreg ;
+		for (int i=0;i<100;i++) {
+		String customerId = custList.get(i);
+		
+		checkreg =  crirepo.findById(customerId).orElse(null);
+		if(checkreg != null && checkreg.getRegId() != null && checkreg.getRegId().length() > 2) {
+			return;
+		}
+		 c2 = crepo.findById(customerId).orElse(null);
+		 if (c2 != null) {
+		        Date cdate = c2.getCustBirth();
+		        System.out.println(cdate);
+		    }
+		}
+		}
+	
 	
 	//@Test
+	void f3() {
+		List<Integer> cclist = new ArrayList<Integer>();
+		clrepo.findAll().forEach(c -> {
+		    cclist.add(c.getCardType()); // Add card type to the list
+		    
+		});
+int cc = cclist.get(1);
+System.out.println(cc);
+		// Ensure that cclist has at least 2 elements before accessing them
+	
+
+
+	}
+	//@Test
+	void f2() {
+	     // Generate and print 10 random card numbers
+        for (int i = 0; i < 10; i++) {
+            String cardNumber = generateCardNumber();
+            System.out.println("Random Card Number " + (i + 1) + ": " + cardNumber);
+        }
+	}
+	
+@Test
 	void f1() throws IOException {
 
-		BufferedReader reader = new BufferedReader(
-				new FileReader("C:\\Users\\User\\Desktop\\DataList\\CustIdList.txt"));
+//		BufferedReader reader = new BufferedReader(
+//				new FileReader("C:\\Users\\User\\Desktop\\DataList\\CustIdList.txt"));
 
-		String custId;
+//		String custId;
+//
+//		while ((custId = reader.readLine()) != null) {
+//			CustIdList.add(custId);
+//		} // custId
+//
+//		BufferedReader reader2 = new BufferedReader(
+//				new FileReader("C:\\Users\\User\\Desktop\\DataList\\CardNumList.txt"));
+//
+//		String cardNum;
+		List<Integer> cclist = new ArrayList<Integer>();
+		clrepo.findAll().forEach(c -> {
+		    cclist.add(c.getCardType()); // Add card type to the list
+		    
+		});
 
-		while ((custId = reader.readLine()) != null) {
-			CustIdList.add(custId);
-		} // custId
-
-		BufferedReader reader2 = new BufferedReader(
-				new FileReader("C:\\Users\\User\\Desktop\\DataList\\CardNumList.txt"));
-
-		String cardNum;
-
-		while ((cardNum = reader2.readLine()) != null) {
-			CardNumList.add(cardNum);
-		} // custId
-
+//		while ((cardNum = reader2.readLine()) != null) {
+//			CardNumList.add(cardNum);
+//		} // custId
+		 
 		CustomerVO c1;
-
+	
 		// 랜덤 생년월일 생성 조정 함수
 
 		// 3000:card_num=> 순차
@@ -119,24 +170,42 @@ public class CardRegInfoTest {
 		// 이거 세번 돌기
 		// 생년월일 + 19 < reg_date <= 오늘
 		// expire = reg_date +5
-
-
-		for (int i = 0; i < 3000; i++) {
+		List<String> custList = new ArrayList<>();
+		crepo.findAll().forEach(c -> {
+		    custList.add(c.getCustId()); // CustomerVO 객체를 리스트에 추가
+		});
+		CardRegInfoVO checkreg ;// cardleginfo에 카드 2개이상 있는지 체크를 위해 
+		for (int i = 1; i < 20000; i++) {
 			
 			UUID uuid = UUID.randomUUID();
-			c1 = crepo.findById(CustIdList.get(i%999)).orElse(null); // 999명의 고객
+			//c1 = crepo.findById(CustIdList.get(i%999)).orElse(null); // 999명의 고객
+		String customerId = custList.get(i%29990);//29990의 고객
+		c1 = crepo.findById(customerId).orElse(null);
+		checkreg =  crirepo.findById(customerId).orElse(null);
+		//cardreginfo에 regid가 2개이상이면 다시 return
+		if(checkreg != null && checkreg.getRegId() != null && checkreg.getRegId().length() > 2) { 
+			
+			return;
+		}
+		 //c2 = crepo.findById(customerId).orElse(null);
+//		 if (c2 != null) {
+//		       cdate = c2.getCustBirth();
+//		       
+//		    }
 			Random random = new Random();
 			int randomNumber = random.nextInt(62) + 1;
-			CardListVO vo = clrepo.findById(randomNumber).orElse(null);;
+			int randomSalary = random.nextInt(5);
+			CardListVO vo = clrepo.findById(randomNumber).orElse(null);
+			//int cardtype = cclist.get(randomNumber);
+			//Date cal = c1.getCustBirth();
 			
-			Date cal = c1.getCust_birth();
+	
 			
 			
-			
-			
-			LocalDate birthDate = LocalDate.parse(cal.toString());
-			LocalDate startDate = birthDate.plusYears(19);
+			//LocalDate birthDate = LocalDate.parse(cdate.toString());
+			//LocalDate startDate = birthDate.plusYears(19);
 			LocalDate today = LocalDate.now();
+			LocalDate startDate = today.minusYears(3);
 
 			long daysBetween = ChronoUnit.DAYS.between(startDate, today);
 			long randomDays = ThreadLocalRandom.current().nextLong(daysBetween + 1);
@@ -155,18 +224,36 @@ public class CardRegInfoTest {
 			Date datePlusFiveYears = new Date(calendar.getTimeInMillis());
 			java.sql.Date sqlDate2 = java.sql.Date.valueOf(format.format(datePlusFiveYears));
 			
-			
+			String cardNumber = generateCardNumber(); //카드번호 자동생성
 			CardRegInfoVO criVO = CardRegInfoVO.builder()
-					.reg_id("REG-" + uuid) // uuid 생성 겹칠일 없음
-					.card_type(vo) // 카드 번호 3개중에 랜덤으로 ?
-					.card_num(CardNumList.get(i)) //카드번호 리스트에서 순차적으로 가져옴
-					.reg_date(sqlDate) //
-					.expire_date(sqlDate2) // regdate + 5년후
-					.cust_id(c1) // 고객번호에서 순차적으로 가져옴
+					.regId("REG-" + uuid) // uuid 생성 겹칠일 없음
+					.cardType(vo) // 카드 번호 3개중에 랜덤으로 ?
+					.cardNum(cardNumber) //카드번호 리스트에서 순차적으로 가져옴
+					.regDate(sqlDate) //
+					.expireDate(sqlDate2) // regdate + 5년후
+					.custId(c1) // 고객번호에서 순차적으로 가져옴
 					.build();
 			
 			crirepo.save(criVO);
+			System.out.println(criVO);
 		}
 
 	}
+	//자동 카드번호 추출기
+	public static String generateCardNumber() {
+        StringBuilder cardNumberBuilder = new StringBuilder();
+        Random random = new Random();
+
+        // Generate 16 random digits
+        for (int i = 0; i < 16; i++) {
+            // Insert hyphens at appropriate positions
+            if (i > 0 && i % 4 == 0) {
+                cardNumberBuilder.append("-");
+            }
+            cardNumberBuilder.append(random.nextInt(10)); // Append a random digit from 0 to 9
+        }
+
+        return cardNumberBuilder.toString();
+    }
+
 }

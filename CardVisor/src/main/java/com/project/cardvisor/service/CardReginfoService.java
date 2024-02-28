@@ -15,5 +15,8 @@ public class CardReginfoService {
 		int count = crirepo.addOnedaycustomer();
 		return count;
 	}
-
+	public int totalcardregamount() {
+		int count = crirepo.totalcardregamount();
+		return count;
+	}
 }

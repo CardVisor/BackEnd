@@ -20,7 +20,7 @@ public class JobListTest {
 		
 		for(int i=0; i<joblist.length; i++) {
 			String job = joblist[i];
-			JobListVO j1 = JobListVO.builder().job_type(job).build();
+			JobListVO j1 = JobListVO.builder().jobType(job).build();
 			jrepo.save(j1);
 		}
 	}

@@ -30,8 +30,8 @@ public class InterestVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int interest_id;
+	private int interestId;
 	
-	private String interest_type;
+	private String interestType;
 
 }

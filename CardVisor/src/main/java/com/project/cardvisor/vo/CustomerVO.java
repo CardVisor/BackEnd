@@ -32,18 +32,18 @@ public class CustomerVO {
 	
 	
 	@Id
-	private String cust_id;
+	private String custId;
 	
-	private String cust_name;
-	private char cust_gender;
-	private Date cust_birth;
-	private String cust_phone;
-	private String cust_email;
-	private String cust_salary;
+	private String custName;
+	private char custGender;
+	private Date custBirth;
+	private String custPhone;
+	private String custEmail;
+	private String custSalary;
 	
 	@ManyToOne
 	@JoinColumn(name="job_id")
-	private JobListVO job_id;
+	private JobListVO jobId;
 	
 	
 

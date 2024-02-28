@@ -26,11 +26,11 @@ public class CardBenefitComposite implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name="card_type")
-	private CardListVO card_type;
+	private CardListVO cardType;
 	
 	@ManyToOne
 	@JoinColumn(name="benefit_id")
-	private BenefitVO benefit_id;
+	private BenefitVO benefitId;
 	
 	
 }

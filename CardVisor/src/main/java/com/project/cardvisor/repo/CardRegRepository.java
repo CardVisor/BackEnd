@@ -10,6 +10,6 @@ import com.project.cardvisor.vo.CustomerVO;
 
 public interface CardRegRepository extends CrudRepository<CardRegInfoVO, String>{
 	
-	@Query(value="select card from CardRegInfoVO card where card.cust_id = ?1")
+	@Query(value="select card from CardRegInfoVO card where card.custId = ?1")
 	List<CardRegInfoVO> selectByCustInfo(CustomerVO vo);
 }

@@ -1,9 +1,11 @@
 package com.project.cardvisor.vo;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -31,26 +33,29 @@ import lombok.ToString;
 public class PaymentsVO {
 	
 	@Id
-	private String pay_id;
+	private String payId;
 	
 	@ManyToOne
 	@JoinColumn(name="reg_id")
-	private CardRegInfoVO reg_id;
+	private CardRegInfoVO regId;
 	
 	private String nation;
-	private String currency_code;
-	private double currency_rate;
+	private String currencyCode;
+	private double currencyRate;
 	
-	private String pay_store;
-	private long pay_amount;
+	private String payStore;
+	private long payAmount;
 	
 	//@CreationTimestamp
-	private Timestamp pay_date;
+	private Timestamp payDate;
 	
 	@ManyToOne
 	@JoinColumn(name="mcc_code")
-	private MccVO mcc_code;
+	private MccVO mccCode;
 	
-	private int benefit_amount;
+	private int benefitAmount;
+	
+	private int appliedBenefitId;
+	private Date dataInsertDate;
 
 }

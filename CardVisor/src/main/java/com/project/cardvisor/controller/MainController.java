@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.cardvisor.service.CardClusterService;
 import com.project.cardvisor.service.CardReginfoService;
 import com.project.cardvisor.service.CurrencyService;
 import com.project.cardvisor.service.CustClusterService;
@@ -21,6 +22,8 @@ public class MainController {
 	@Autowired
 	 CustClusterService genderRatioService;
 
+	@Autowired
+	CardClusterService cardservice;
 	@Autowired
 	CardReginfoService cardreginfoservice;
 	@Autowired
@@ -89,6 +92,11 @@ public class MainController {
     	 List<Map<String, Object>> plist = paymentservice.SelectLastYearPerMonthamount();
     	return plist;
     }
+    @GetMapping("/selectLastYearAndPerMonthamount")
+    public List<List<Map<String,Object>>>SelectLastYearAndPerMonthamount() {
+    	 List<List<Map<String,Object>>> plist = paymentservice.SelectLastYearAndPerMonthamount();
+    	 return plist;
+    }
     @GetMapping("/perMonthTotalAmount")
     public int PerMonthTotalAmount() {
     	int totalamount = paymentservice.perMonthTotalAmount();
@@ -144,4 +152,102 @@ public class MainController {
     	int amount = paymentservice.selectWeektransaction();
     	return amount;
     }
+    
+    //Detail
+    @GetMapping("/detailselectPerMonthamount")
+    public List<Map<String, Object>> DetailSelectPerMonthamount() {
+    	 List<Map<String, Object>> plist = paymentservice.DetailselectPerMonthamount();
+    	return plist;
+    }
+    @GetMapping("/detailselectLastYearPerMonthamount")
+    public List<Map<String, Object>> DetailSelectLastYearPerMonthamount() {
+    	 List<Map<String, Object>> plist = paymentservice.DetailSelectLastYearPerMonthamount();
+    	return plist;
+    }
+
+    @GetMapping("/detailperMonthTotalAmount")
+    public int DetailPerMonthTotalAmount() {
+    	int totalamount = paymentservice.DetailperMonthTotalAmount();
+    	return totalamount;
+    }
+    @GetMapping("/detailtotalIncrese")
+    public Double DetailTotalIncrese() {
+    	double totalIncrese = paymentservice.DetailTotalIncrese();
+    	return totalIncrese;
+    }
+    //주별..
+    @GetMapping("/detailselectPerWeeklyamount")
+    public List<Map<String, Object>> DetailSelectPerWeeklyamount() {
+   	 List<Map<String, Object>> plist = paymentservice.DetailselectPerWeeklyamount();
+   	return plist;
+   }
+    
+    @GetMapping("/detailselectLastYearPerWeeklyamount")
+    public List<Map<String, Object>> DetailSelectLastYearPerWeeklyamount() {
+   	 List<Map<String, Object>> plist = paymentservice.DetailSelectLastYearPerWeeklyamount();
+   	return plist;
+   }
+    @GetMapping("/detailperWeekTotalAmount")
+    public int DetailperWeekTotalAmount() {
+    	int totalamount = paymentservice.DetailperWeekTotalAmount();
+    	return totalamount;
+    }
+    @GetMapping("/detailweektotalIncrese")
+    public Double DetailWeekTotalIncrese() {
+    	double totalIncrese = paymentservice.DetailWeekTotalIncrese();
+    	return totalIncrese;
+    }
+    
+    //월별 거래건수
+    @GetMapping("/detailselectPerMonthtransaction")
+    public List<Map<String, Object>> DetailSelectPerMonthtransaction() {
+   	 List<Map<String, Object>> plist = paymentservice.DetailselectPerMonthtransaction();
+   	return plist;
+   }
+    @GetMapping("/detailselectMonthtransaction")
+    public int DetailSelectMonthtransaction() {
+    	int amount = paymentservice.DetailselectMonthtransaction();
+    	return amount;
+    }
+    //주간 거래건수
+    @GetMapping("/detailselectPerWeeklytransaction")
+    public List<Map<String, Object>> DetailSelectPerWeeklytransaction() {
+   	 List<Map<String, Object>> plist = paymentservice.DetailselectPerWeeklytransaction();
+   	return plist;
+   }
+    @GetMapping("/detailselectWeektransaction")
+    public int DetailselectWeektransaction() {
+    	int amount = paymentservice.DetailselectWeektransaction();
+    	return amount;
+    }
+    @GetMapping("/selectTop5CardList")
+    public List<Map<String, Object>> SelectTop5CardList() {
+   	 List<Map<String, Object>> clist = cardservice.SelectTop5CardList();
+   	return clist;
+   }
+    @GetMapping("/totalCardRegAmount")
+	public int TotalCardRegAmount() {
+    	int amount = cardreginfoservice.totalcardregamount();
+    	return amount;
+    }
+   @GetMapping("/payAmoutTop5Card")
+   public List<Map<String, Object>> PayAmoutTop5Card() {
+	   List<Map<String, Object>> plist = paymentservice.PayAmountTop5Card();
+	   return plist;
+   }
+   @GetMapping("/abroadPayAmountTop5Card")
+  public List<Map<String, Object>> AbroadPayAmountTop5Card(){
+	   List<Map<String, Object>> plist = paymentservice.AbroadPayAmountTop5Card();
+	   return plist;
+   }
+   @GetMapping("benefitTop5Card")
+   public List<Map<String, Object>> BenefitTop5Card(){
+	   List<Map<String, Object>> blist = paymentservice.benefitTop5Card();
+	   return blist;
+   }
+   @GetMapping("benefitTotalAmount")
+   public int benefitTotalAmount() {
+	   int count = paymentservice.benefitTotalAmount();
+	   return count;
+   }
 }

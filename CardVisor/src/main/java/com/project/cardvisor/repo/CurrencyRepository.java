@@ -9,8 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.project.cardvisor.vo.CurrencyVO;
 
-
-
 public interface CurrencyRepository extends CrudRepository<CurrencyVO, Integer>{
 
 	@Query(value = "select * from currency c where c.currency_date = :currency_date",nativeQuery = true)

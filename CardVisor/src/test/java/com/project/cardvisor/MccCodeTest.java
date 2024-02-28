@@ -21,8 +21,8 @@ public class MccCodeTest {
 				"편의점/마트/잡화", "취미/여가", "술/유흥", "보험/세금/기타금융", "기타" };
 		IntStream.range(0, mcclist.length).forEach(i -> {
 			MccVO mcc = MccVO.builder()
-					.mcc_code(String.format("%04d", i+1))
-					.ctg_name(mcclist[i])
+					.mccCode(String.format("%04d", i+1))
+					.ctgName(mcclist[i])
 					.build();
 			mccrepo.save(mcc);
 		});

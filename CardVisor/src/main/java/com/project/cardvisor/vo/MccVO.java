@@ -27,7 +27,7 @@ public class MccVO {
 	
 	@Id
 	@Column(length = 4)
-	private String mcc_code;
+	private String mccCode;
 	
-	private String ctg_name;
+	private String ctgName;
 }

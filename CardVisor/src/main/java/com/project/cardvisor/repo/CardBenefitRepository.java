@@ -12,6 +12,6 @@ import com.project.cardvisor.vo.CardListVO;
 
 public interface CardBenefitRepository extends CrudRepository<CardBenefitVO, CardBenefitComposite>{
 	
-	@Query(value="SELECT c FROM CardBenefitVO c WHERE c.id.card_type = :card_type")
+	@Query(value="SELECT c FROM CardBenefitVO c WHERE c.id.cardType = :card_type")
 	List<CardBenefitVO> findbyCard_type(@Param("card_type") int card_type);
 }

@@ -28,7 +28,7 @@ public class JobListVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int job_id;
+	private int jobId;
 	
-	private String job_type;
+	private String jobType;
 }

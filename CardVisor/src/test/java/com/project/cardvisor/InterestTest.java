@@ -22,7 +22,7 @@ public class InterestTest {
 		
 		IntStream.range(0, iList.length).forEach(i->{
 			InterestVO interest = InterestVO.builder()
-					.interest_type(iList[i])
+					.interestType(iList[i])
 					.build();
 			irepo.save(interest);
 		});

@@ -33,6 +33,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.cardvisor.repo.CardListRepository;
 import com.project.cardvisor.repo.CurrencyRepository;
 import com.project.cardvisor.service.CurrencyService;
 import com.project.cardvisor.vo.CurrencyVO;
@@ -53,9 +54,16 @@ public class CurrencyTests {
 	@Autowired
 	CurrencyService cService;
 	
-	//@Test
+	@Autowired
+	CardListRepository clrepo;
+	@Test
 	void f4() {
-		
+		List<Map<String, Object>> top5 = clrepo.selectTop5CardList();
+		for(Map<String, Object> o : top5) {
+			for(Map.Entry<String, Object> entry : o.entrySet()) {
+	            System.out.println(entry.getKey() + ": " + entry.getValue());
+	        }
+		}
 	}
 	
 	//@Test
@@ -85,7 +93,7 @@ public class CurrencyTests {
 	        }
 	}
 	
-	@Test
+	//@Test
 	void f1() {
 		
 ObjectMapper objectmapper = new ObjectMapper();

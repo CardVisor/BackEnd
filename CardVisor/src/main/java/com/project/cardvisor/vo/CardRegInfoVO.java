@@ -31,21 +31,21 @@ import lombok.ToString;
 @Table(name="card_reg_info")
 public class CardRegInfoVO {
 	@Id
-	private String reg_id;
+	private String regId;
 	
 	@ManyToOne
 	@JoinColumn(name="cust_id")
-	private CustomerVO cust_id;
+	private CustomerVO custId;
 	
 	@ManyToOne
 	@JoinColumn(name="card_type")
-	private CardListVO card_type;
+	private CardListVO cardType;
 	
-	private String card_num;
+	private String cardNum;
 	
-	private Date reg_date;
+	private Date regDate;
 	
-	private Date expire_date;
+	private Date expireDate;
 	
 	
 	

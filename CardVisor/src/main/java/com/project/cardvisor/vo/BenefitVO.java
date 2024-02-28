@@ -30,17 +30,17 @@ public class BenefitVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int benefit_id;
+	private int benefitId;
 	
-	private String benefit_detail;
+	private String benefitDetail;
 		
-	private String mcc_code;
+	private String mccCode;
 	
-	private double benefit_pct;
+	private double benefitPct;
 	
 	@ManyToOne
 	@JoinColumn(name="interest_id")
-	private InterestVO interest_id;
+	private InterestVO interestId;
 	
 
 }

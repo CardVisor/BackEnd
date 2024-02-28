@@ -21,11 +21,11 @@ public class CustInterestComposite implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name="cust_id")
-	private CustomerVO cust_id;
+	private CustomerVO custId;
 	
 	@ManyToOne
 	@JoinColumn(name="interest_id")
-	private InterestVO interest_id;
+	private InterestVO interestId;
 	
 	
 }

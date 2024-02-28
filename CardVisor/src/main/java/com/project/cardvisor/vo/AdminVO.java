@@ -27,9 +27,9 @@ import lombok.ToString;
 public class AdminVO {
 	
 	@Id
-	private String admin_id;
+	private String adminId; 
 	
-	private String admin_role;
-	private String admin_pw;
+	private String adminRole;
+	private String adminPw;
 
 }
